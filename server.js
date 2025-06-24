@@ -6,14 +6,16 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
+// Serve static files from the 'public' directory
+app.use(express.static('public'));
+
 const TMDB_API_KEY = 'YOUR_API_KEY_HERE';
 
 app.use(cors());
 
 app.get('/api/search', async (req, res) => {
     const query = req.query.query;
-    // Get region from query, default to United States
-    const region = req.query.region || 'US'; 
+    const region = req.query.region || 'US';
 
     if (!query) {
         return res.status(400).json({ error: 'Query parameter is required' });
@@ -33,8 +35,6 @@ app.get('/api/search', async (req, res) => {
                 const providersUrl = `https://api.themoviedb.org/3/${item.media_type}/${item.id}/watch/providers?api_key=${TMDB_API_KEY}`;
                 const providersResponse = await fetch(providersUrl);
                 const providersData = await providersResponse.json();
-                
-                // Use the dynamic region code here
                 item.providers = providersData.results[region.toUpperCase()] || {};
                 return item;
             })
