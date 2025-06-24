@@ -64,7 +64,7 @@ Follow these steps to get a local copy up and running.
     You should see the message `Server proxy is running on http://localhost:3000` in your terminal.
 
 6.  **Open the application:**
-    Open the [`index.html`](https://github.com/bigricksosa/streamfinder/blob/main/index.html) file in your web browser. You can usually do this by double-clicking the file.
+    Open the [`index.html`](https://github.com/bigricksosa/streamfinder/blob/main/index.html) file in your web browser by entering `localhost:3000` in the address bar.
 
 ---
 
