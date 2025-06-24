@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
-const TMDB_API_KEY = 'API_KEY'; 
+const TMDB_API_KEY = 'YOUR_API_KEY_HERE';
 
 app.use(cors());
 
