@@ -13,7 +13,7 @@ This project was built from the ground up to demonstrate how to securely interac
 *   **🔐 Secure API Handling:** Uses a Node.js/Express backend proxy to protect the TMDB API key from being exposed in the browser.
 *   **🔄 Quick Reset:** A dedicated button to clear the search bar and results with a single click.
 *   **⌨️ Keyboard Friendly:** Simply press `Enter` to start your search.
-*   **💅 Clean UI:** A simple, modern, and responsive user interface.
+*   **🌐 Clean UI:** A simple, modern, and responsive user interface.
 
 ---
 
