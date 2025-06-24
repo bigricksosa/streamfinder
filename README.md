@@ -9,7 +9,7 @@ This project was built from the ground up to demonstrate how to securely interac
 ### ✨ Features
 
 *   **🔎 Smart Search:** Instantly search for any movie or TV show.
-*   **🌍 Region Selector:** Get accurate streaming availability for your country, with support for the US, UK, Canada, Germany, and Australia.
+*   **🌍 Region Selector:** Get accurate streaming availability for your country, with support for the US, UK, Canada, Australia and Europe.
 *   **🔐 Secure API Handling:** Uses a Node.js/Express backend proxy to protect the TMDB API key from being exposed in the browser.
 *   **🔄 Quick Reset:** A dedicated button to clear the search bar and results with a single click.
 *   **⌨️ Keyboard Friendly:** Simply press `Enter` to start your search.
