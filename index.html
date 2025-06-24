@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stream Finder</title>
+    <style>
+        body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; margin: 2em; background-color: #f4f4f9; color: #333; }
+        #header-container { display: flex; align-items: center; gap: 20px; }
+        h1 { color: #5a4b8c; margin: 0; }
+        #region-selector select { font-size: 1em; padding: 5px; border-radius: 4px; }
+        #search-container { display: flex; gap: 10px; margin-bottom: 20px; }
+        #searchInput { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 15px; background-color: #5a4b8c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; }
+        button:hover { background-color: #493d70; }
+        .result-item { background-color: white; border: 1px solid #ddd; border-radius: 4px; padding: 15px; margin-bottom: 10px; }
+        .result-item h3 { margin: 0 0 10px 0; }
+        .providers { font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div id="header-container">
+        <h1>Stream Finder</h1>
+        <div id="region-selector">
+            <select id="region">
+                <option value="US">🇺🇸 United States</option>
+                <option value="GB">🇬🇧 United Kingdom</option>
+                <option value="DE">🇪🇺 Europe</option>
+                <option value="CA">🇨🇦 Canada</option>
+                <option value="AU">🇦🇺 Australia</option>
+            </select>
+        </div>
+    </div>
+    <hr>
+    <div id="search-container">
+        <input type="text" id="searchInput" placeholder="Enter a show or movie (e.g., The Office)">
+        <button onclick="searchMedia()">Search</button>
+        <button onclick="resetSearch()" title="Clear search and results">&#x21bb;</button>
+    </div>
+    <div id="results"></div>
+
+    <script>
+        // Trigger search when Enter is pressed in the input field
+        document.getElementById('searchInput').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                searchMedia();
+            }
+        });
+
+        // Function to clear the search input and results
+        function resetSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('results').innerHTML = '';
+        }
+
+        async function searchMedia() {
+            const query = document.getElementById('searchInput').value.trim();
+            const region = document.getElementById('region').value; // Get selected region
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = 'Searching...';
+
+            if (!query) {
+                resultsDiv.innerHTML = '<p style="color:red;">Please enter a search term.</p>';
+                return;
+            }
+
+            try {
+                // Pass the region to backend
+                const response = await fetch(`http://localhost:3000/api/search?query=${encodeURIComponent(query)}&region=${region}`);
+                const results = await response.json();
+
+                resultsDiv.innerHTML = '';
+
+                if (results.length === 0) {
+                    resultsDiv.innerHTML = '<p>No results found.</p>';
+                    return;
+                }
+
+                results.forEach(item => {
+                    const title = item.title || item.name;
+                    const year = (item.release_date || item.first_air_date || '').slice(0, 4);
+                    const providers = item.providers.flatrate 
+                        ? item.providers.flatrate.map(p => p.provider_name).join(', ') 
+                        : `Not available for streaming subscription in your selected region (${region}).`;
+                    
+                    resultsDiv.innerHTML += `
+                        <div class="result-item">
+                            <h3>${title} (${year})</h3>
+                            <div class="providers">
+                                <strong>Available on:</strong> ${providers}
+                            </div>
+                        </div>
+                    `;
+                });
+
+            } catch (error) {
+                resultsDiv.innerHTML = '<p style="color:red;">Error fetching data. Is the backend server running?</p>';
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
